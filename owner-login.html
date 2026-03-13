@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Owner Login – Selvi Furniture</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <style>
+        :root {
+            --red: #e53935;
+            --red-dark: #b71c1c;
+            --red-light: #ffebee;
+            --white: #ffffff;
+            --gray-light: #f5f5f5;
+            --gray: #9e9e9e;
+            --text: #1a1a1a;
+            --radius: 14px;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(160deg, #fff 0%, #fff5f5 50%, #ffebee 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .top-strip {
+            height: 4px;
+            background: linear-gradient(90deg, var(--red), var(--red-dark), var(--red));
+            background-size: 400%;
+            animation: shimmer 3s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 0%
+            }
+
+            100% {
+                background-position: 400%
+            }
+        }
+
+        .page-wrap {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(229, 57, 53, .12), 0 4px 20px rgba(0, 0, 0, .06);
+            padding: 50px 44px;
+            width: 100%;
+            max-width: 440px;
+            animation: popIn .4s cubic-bezier(.34, 1.56, .64, 1) both;
+        }
+
+        @keyframes popIn {
+            from {
+                transform: scale(.9);
+                opacity: 0
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1
+            }
+        }
+
+        .card-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .card-logo .icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(229, 57, 53, .3);
+            flex-shrink: 0;
+        }
+
+        .card-logo .icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .card-logo div h2 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        .card-logo div p {
+            font-size: .8rem;
+            color: var(--gray);
+        }
+
+        h3 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            color: var(--gray);
+            font-size: .9rem;
+            margin-bottom: 32px;
+        }
+
+        /* Steps indicator */
+        .steps {
+            display: flex;
+            gap: 0;
+            margin-bottom: 32px;
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+            font-size: .75rem;
+            font-weight: 600;
+            color: var(--gray);
+            position: relative;
+            padding-bottom: 8px;
+        }
+
+        .step::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #f0f0f0;
+            border-radius: 99px;
+        }
+
+        .step.done::after {
+            background: var(--red);
+        }
+
+        .step.active::after {
+            background: var(--red);
+        }
+
+        .step.done {
+            color: var(--red);
+        }
+
+        .step.active {
+            color: var(--red);
+        }
+
+        label {
+            display: block;
+            font-size: .82rem;
+            font-weight: 700;
+            color: var(--gray);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+
+        .input-wrap {
+            position: relative;
+            margin-bottom: 22px;
+        }
+
+        .input-prefix {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: .9rem;
+            color: var(--gray);
+            font-weight: 600;
+            pointer-events: none;
+        }
+
+        input {
+            width: 100%;
+            border: 2px solid #e8e8e8;
+            border-radius: 12px;
+            padding: 14px 16px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            outline: none;
+            transition: border-color .2s, box-shadow .2s;
+            background: #fafafa;
+        }
+
+        input.with-prefix {
+            padding-left: 48px;
+        }
+
+        input:focus {
+            border-color: var(--red);
+            box-shadow: 0 0 0 3px rgba(229, 57, 53, .12);
+            background: #fff;
+        }
+
+        input::placeholder {
+            color: #ccc;
+        }
+
+        .otp-inputs {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 22px;
+        }
+
+        .otp-inputs input {
+            width: 56px;
+            height: 60px;
+            text-align: center;
+            font-size: 1.6rem;
+            font-weight: 800;
+            padding: 0;
+            border-radius: 12px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all .2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--red), var(--red-dark));
+            color: #fff;
+            box-shadow: 0 8px 24px rgba(229, 57, 53, .3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(229, 57, 53, .4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .error-msg {
+            color: var(--red);
+            font-size: .85rem;
+            font-weight: 600;
+            margin-top: -14px;
+            margin-bottom: 16px;
+            display: none;
+            padding: 10px 14px;
+            background: #fff0f0;
+            border-radius: 8px;
+            border-left: 3px solid var(--red);
+        }
+
+        .success-msg {
+            color: #2e7d32;
+            font-size: .85rem;
+            font-weight: 600;
+            margin-top: -14px;
+            margin-bottom: 16px;
+            display: none;
+            padding: 10px 14px;
+            background: #f1f8e9;
+            border-radius: 8px;
+            border-left: 3px solid #4caf50;
+        }
+
+        .otp-demo {
+            background: #fff8e1;
+            border: 1.5px dashed #f9a825;
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: .82rem;
+            color: #e65100;
+            margin-bottom: 20px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: var(--gray);
+            font-size: .88rem;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color .2s;
+        }
+
+        .back-link:hover {
+            color: var(--red);
+        }
+
+        .timer-pill {
+            display: inline-block;
+            font-size: .8rem;
+            font-weight: 600;
+            color: var(--red);
+            margin-bottom: 16px;
+        }
+
+        /* phone step panel */
+        #panel-phone {
+            display: block;
+        }
+
+        #panel-otp {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="top-strip"></div>
+
+    <div class="page-wrap">
+        <div class="card">
+            <div class="card-logo">
+                <div class="icon"><img src="img-chair.png" alt="Selvi Furniture" /></div>
+                <div>
+                    <h2>Selvi Furniture</h2>
+                    <p>Work Tracking System</p>
+                </div>
+            </div>
+
+            <h3>Owner Login</h3>
+            <p class="subtitle">Sign in with your registered phone number</p>
+
+            <div class="steps">
+                <div class="step active" id="step1">1. Phone Number</div>
+                <div class="step" id="step2">2. Verify OTP</div>
+            </div>
+
+            <!-- Panel 1: Phone -->
+            <div id="panel-phone">
+                <label for="phone-input">Phone Number</label>
+                <div class="input-wrap">
+                    <span class="input-prefix">+91</span>
+                    <input type="tel" id="phone-input" class="with-prefix" placeholder="98765 43210" maxlength="10" />
+                </div>
+                <p class="error-msg" id="phone-error">Please enter a valid 10-digit phone number.</p>
+                <button class="btn btn-primary" onclick="sendOTP()">Send OTP →</button>
+            </div>
+
+            <!-- Panel 2: OTP -->
+            <div id="panel-otp">
+                <p id="phone-display" style="color:var(--gray);font-size:.88rem;margin-bottom:6px;font-weight:500;"></p>
+                <div class="otp-demo" id="otp-hint"></div>
+
+                <label>Enter 6-digit OTP</label>
+                <div class="otp-inputs">
+                    <input type="text" class="otp-box" maxlength="1" inputmode="numeric" onkeyup="otpNext(this,0)" />
+                    <input type="text" class="otp-box" maxlength="1" inputmode="numeric" onkeyup="otpNext(this,1)" />
+                    <input type="text" class="otp-box" maxlength="1" inputmode="numeric" onkeyup="otpNext(this,2)" />
+                    <input type="text" class="otp-box" maxlength="1" inputmode="numeric" onkeyup="otpNext(this,3)" />
+                    <input type="text" class="otp-box" maxlength="1" inputmode="numeric" onkeyup="otpNext(this,4)" />
+                    <input type="text" class="otp-box" maxlength="1" inputmode="numeric" onkeyup="otpNext(this,5)" />
+                </div>
+                <p class="error-msg" id="otp-error">Incorrect OTP. Please try again.</p>
+                <button class="btn btn-primary" onclick="verifyOTP()">Verify &amp; Login</button>
+                <span class="timer-pill" id="resend-timer"></span>
+                <a href="#" onclick="resendOTP(event)" id="resend-link"
+                    style="display:none;color:var(--red);font-size:.85rem;font-weight:600;text-decoration:none;display:block;text-align:center;margin-top:10px;">Resend
+                    OTP</a>
+            </div>
+
+            <a href="index.html" class="back-link">← Back to Home</a>
+        </div>
+    </div>
+
+    <script>
+        // Hardcoded owner phone for demo: any valid 10-digit number
+        let generatedOTP = '';
+        let timerInterval = null;
+        let timerSec = 30;
+
+        function sendOTP() {
+            const phone = document.getElementById('phone-input').value.trim();
+            const err = document.getElementById('phone-error');
+            if (!/^\d{10}$/.test(phone)) {
+                err.style.display = 'block';
+                return;
+            }
+            err.style.display = 'none';
+
+            // Generate 6-digit OTP
+            generatedOTP = String(Math.floor(100000 + Math.random() * 900000));
+
+            // Show OTP panel
+            document.getElementById('panel-phone').style.display = 'none';
+            document.getElementById('panel-otp').style.display = 'block';
+            document.getElementById('step1').classList.add('done');
+            document.getElementById('step2').classList.add('active');
+            document.getElementById('phone-display').textContent = `OTP sent to +91 ${phone}`;
+
+            // Demo hint (remove in production — replace with real SMS)
+            const hint = document.getElementById('otp-hint');
+            hint.textContent = `Demo OTP: ${generatedOTP}`;
+            hint.style.display = 'block';
+
+            // Focus first OTP box
+            document.querySelectorAll('.otp-box')[0].focus();
+
+            // Start 30s resend timer
+            startResendTimer();
+        }
+
+        function startResendTimer() {
+            timerSec = 30;
+            const timerEl = document.getElementById('resend-timer');
+            const resendLink = document.getElementById('resend-link');
+            resendLink.style.display = 'none';
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timerSec--;
+                timerEl.textContent = timerSec > 0 ? `Resend in ${timerSec}s` : '';
+                if (timerSec <= 0) {
+                    clearInterval(timerInterval);
+                    resendLink.style.display = 'block';
+                }
+            }, 1000);
+        }
+
+        function resendOTP(e) {
+            e.preventDefault();
+            generatedOTP = String(Math.floor(100000 + Math.random() * 900000));
+            document.getElementById('otp-hint').textContent = `Demo OTP: ${generatedOTP}`;
+            document.querySelectorAll('.otp-box').forEach(b => b.value = '');
+            document.querySelectorAll('.otp-box')[0].focus();
+            document.getElementById('resend-link').style.display = 'none';
+            startResendTimer();
+        }
+
+        function otpNext(input, idx) {
+            const boxes = document.querySelectorAll('.otp-box');
+            // Only digits
+            input.value = input.value.replace(/\D/g, '');
+            if (input.value.length === 1 && idx < 5) boxes[idx + 1].focus();
+            if (input.value === '' && idx > 0) {
+                // Handle backspace
+            }
+        }
+
+        function verifyOTP() {
+            const boxes = document.querySelectorAll('.otp-box');
+            const entered = Array.from(boxes).map(b => b.value).join('');
+            const err = document.getElementById('otp-error');
+
+            if (entered.length < 6) {
+                err.textContent = 'Please enter all 6 digits.';
+                err.style.display = 'block';
+                return;
+            }
+            if (entered === generatedOTP) {
+                err.style.display = 'none';
+                // Store owner session
+                localStorage.setItem('selvi_owner_logged_in', '1');
+                localStorage.setItem('selvi_role', 'owner');
+                window.location.href = 'owner-home.html';
+            } else {
+                err.textContent = 'Incorrect OTP. Please try again.';
+                err.style.display = 'block';
+                boxes.forEach(b => b.value = '');
+                boxes[0].focus();
+            }
+        }
+
+        // Allow Enter key
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Enter') {
+                if (document.getElementById('panel-phone').style.display !== 'none') sendOTP();
+                else verifyOTP();
+            }
+        });
+    </script>
+</body>
+
+</html>

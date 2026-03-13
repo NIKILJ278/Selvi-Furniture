@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Owner Dashboard – Selvi Furniture</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <style>
+        :root {
+            --red: #e53935;
+            --red-dark: #b71c1c;
+            --red-light: #ffebee;
+            --white: #ffffff;
+            --bg: #fafafa;
+            --gray: #9e9e9e;
+            --gray-dark: #424242;
+            --border: #efefef;
+            --text: #1a1a1a;
+            --green: #43a047;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* ── NAVBAR ── */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+        }
+
+        .nav-brand-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-brand-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .nav-brand-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .nav-brand {
+            font-size: 1.1rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--red), var(--red-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .badge-alert {
+            background: var(--red);
+            color: #fff;
+            border-radius: 50px;
+            padding: 4px 12px;
+            font-size: .75rem;
+            font-weight: 800;
+            display: none;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: .6
+            }
+        }
+
+        .btn-nav {
+            border: 1.5px solid var(--red);
+            background: none;
+            cursor: pointer;
+            font-size: .85rem;
+            font-weight: 700;
+            color: var(--red);
+            font-family: 'Inter', sans-serif;
+            padding: 7px 14px;
+            border-radius: 8px;
+            transition: all .2s;
+        }
+
+        .btn-nav:hover {
+            background: var(--red);
+            color: #fff;
+        }
+
+        /* ── STATS ── */
+        .stats-section {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 24px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .stat-box {
+            background: var(--bg);
+            border-radius: 14px;
+            padding: 18px 16px;
+            text-align: center;
+            border: 1.5px solid var(--border);
+        }
+
+        .stat-box .s-num {
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 4px;
+        }
+
+        .stat-box .s-lbl {
+            font-size: .78rem;
+            font-weight: 600;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: .4px;
+        }
+
+        .stat-box .s-num.red {
+            color: var(--red);
+        }
+
+        .stat-box .s-num.green {
+            color: var(--green);
+        }
+
+        /* ── OVERDUE ALERTS ── */
+        .alert-section {
+            max-width: 960px;
+            margin: 18px auto 0;
+            padding: 0 16px;
+        }
+
+        .overdue-banner {
+            background: #fff0f0;
+            border-left: 4px solid var(--red);
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: .87rem;
+            font-weight: 600;
+            color: #b71c1c;
+            animation: fadeIn .3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-8px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        /* ── FEED ── */
+        .main {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 16px 16px 60px;
+        }
+
+        .feed-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .feed-header h2 {
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--white);
+            border: 1.5px solid var(--border);
+            border-radius: 50px;
+            padding: 8px 16px;
+            width: 250px;
+        }
+
+        .search-bar input {
+            border: none;
+            outline: none;
+            font-size: .88rem;
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            flex: 1;
+            background: transparent;
+        }
+
+        .search-bar input::placeholder {
+            color: #bbb;
+        }
+
+        /* GRID: 2-column on large screens */
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 20px;
+        }
+
+        .post-card {
+            background: var(--white);
+            border-radius: 18px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, .04);
+            animation: fadeUp .4s ease both;
+        }
+
+        @keyframes fadeUp {
+            from {
+                transform: translateY(12px);
+                opacity: 0
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1
+            }
+        }
+
+        .post-header {
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--red), var(--red-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: .88rem;
+            color: #fff;
+            border: 2px solid var(--red-light);
+            flex-shrink: 0;
+        }
+
+        .post-meta {
+            flex: 1;
+        }
+
+        .post-name {
+            font-weight: 700;
+            font-size: .92rem;
+        }
+
+        .post-time {
+            font-size: .75rem;
+            color: var(--gray);
+            margin-top: 1px;
+        }
+
+        .overdue-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--red);
+            box-shadow: 0 0 6px var(--red);
+            animation: blink 1.5s infinite;
+        }
+
+        .ok-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--green);
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: .3
+            }
+        }
+
+        .post-img {
+            width: 100%;
+            display: block;
+            max-height: 300px;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        .post-body {
+            padding: 12px 16px;
+        }
+
+        .post-body p {
+            font-size: .88rem;
+            line-height: 1.6;
+            color: var(--gray-dark);
+        }
+
+        .post-footer {
+            padding: 10px 16px 14px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .post-footer .time-text {
+            font-size: .75rem;
+            color: var(--gray);
+            font-weight: 600;
+        }
+
+        .likes-badge {
+            font-size: .77rem;
+            font-weight: 700;
+            color: var(--red);
+            background: var(--red-light);
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .empty-feed {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--gray);
+            grid-column: 1/-1;
+        }
+
+        .empty-feed .e-icon {
+            font-size: 52px;
+            margin-bottom: 12px;
+        }
+
+        .empty-feed h3 {
+            color: var(--gray-dark);
+            font-size: 1.1rem;
+            margin-bottom: 6px;
+        }
+
+        /* ── LIGHTBOX ── */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .92);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox.open {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 12px;
+            object-fit: contain;
+        }
+
+        .lb-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, .15);
+            border: none;
+            color: #fff;
+            font-size: 1.3rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (max-width:600px) {
+            .posts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-bar {
+                width: 100%;
+            }
+
+            .feed-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-brand-wrap">
+            <div class="nav-brand-icon"><img src="img-chair.png" alt="Selvi" /></div>
+            <div class="nav-brand">Owner Dashboard</div>
+        </div>
+        <div class="nav-right">
+            <div class="badge-alert" id="alert-badge">0 Alerts</div>
+            <button class="btn-nav" onclick="doLogout()">Logout</button>
+        </div>
+    </nav>
+
+    <!-- STATS -->
+    <div class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-box">
+                <div class="s-num" id="s-labours">0</div>
+                <div class="s-lbl">Total Labours</div>
+            </div>
+            <div class="stat-box">
+                <div class="s-num green" id="s-active">0</div>
+                <div class="s-lbl">Updated On Time</div>
+            </div>
+            <div class="stat-box">
+                <div class="s-num red" id="s-late">0</div>
+                <div class="s-lbl">Overdue</div>
+            </div>
+            <div class="stat-box">
+                <div class="s-num" id="s-posts">0</div>
+                <div class="s-lbl">Posts Today</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OVERDUE ALERT BANNERS -->
+    <div class="alert-section" id="alert-section"></div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+        <div class="feed-header">
+            <h2>Labour Work Updates</h2>
+            <div class="search-bar">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" id="search-input" placeholder="Search labour name…" oninput="renderFeed()" />
+            </div>
+        </div>
+
+        <div class="posts-grid" id="posts-grid"></div>
+    </div>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <button class="lb-close" onclick="closeLightbox()">✕</button>
+        <img id="lb-img" src="" alt="" />
+    </div>
+
+    <script>
+        // Auth check
+        if (localStorage.getItem('selvi_owner_logged_in') !== '1') {
+            window.location.href = 'owner-login.html';
+        }
+
+        function getPosts() { return JSON.parse(localStorage.getItem('selvi_posts') || '[]'); }
+        function getUsers() { return JSON.parse(localStorage.getItem('selvi_labours') || '[]'); }
+
+        /* a "labour" is anyone who has registered. We derive list from posts + registered users */
+        function getAllLabourIds() {
+            const users = getUsers().map(u => ({ labourId: u.id || u.email, name: u.name, initials: u.initials }));
+            const postors = [...new Set(getPosts().map(p => p.labourId))].map(id => {
+                const p = getPosts().find(x => x.labourId === id);
+                return { labourId: id, name: p.name, initials: p.initials };
+            });
+            // Merge, deduplicate
+            const map = {};
+            [...users, ...postors].forEach(l => { if (!map[l.labourId]) map[l.labourId] = l; });
+            return Object.values(map);
+        }
+
+        function isOverdue(labourId) {
+            const posts = getPosts().filter(p => p.labourId === labourId).sort((a, b) => b.time - a.time);
+            if (!posts.length) return true;
+            return (Date.now() - posts[0].time) > 3600000;
+        }
+
+        function updateStats() {
+            const labours = getAllLabourIds();
+            const total = labours.length;
+            const late = labours.filter(l => isOverdue(l.labourId)).length;
+            const active = total - late;
+            const today = new Date(); today.setHours(0, 0, 0, 0);
+            const todayPosts = getPosts().filter(p => p.time >= today.getTime()).length;
+
+            document.getElementById('s-labours').textContent = total;
+            document.getElementById('s-active').textContent = active;
+            document.getElementById('s-late').textContent = late;
+            document.getElementById('s-posts').textContent = todayPosts;
+
+            // Badge
+            const badge = document.getElementById('alert-badge');
+            if (late > 0) { badge.style.display = 'inline'; badge.textContent = `${late} Alert${late > 1 ? 's' : ''}`; }
+            else badge.style.display = 'none';
+
+            // Overdue banners
+            const section = document.getElementById('alert-section');
+            const overdueLab = labours.filter(l => isOverdue(l.labourId));
+            section.innerHTML = overdueLab.map(l =>
+                `<div class="overdue-banner"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b71c1c" stroke-width="2.5" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> <strong>${escHtml(l.name)}</strong> has not submitted an update in over 1 hour!</div>`
+            ).join('');
+        }
+
+        function renderFeed() {
+            const q = (document.getElementById('search-input').value || '').toLowerCase();
+            const posts = getPosts().sort((a, b) => b.time - a.time);
+            const filtered = q ? posts.filter(p => p.name.toLowerCase().includes(q)) : posts;
+
+            const grid = document.getElementById('posts-grid');
+            if (!filtered.length) {
+                grid.innerHTML = `<div class="empty-feed" style="grid-column:1/-1">
+        <div class="e-icon"><svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="1.5" stroke-linecap="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+        <h3>${q ? 'No posts match your search.' : 'No work updates yet.'}</h3>
+        <p>Work updates from labours will appear here.</p>
+      </div>`;
+                return;
+            }
+
+            grid.innerHTML = filtered.map((p, i) => {
+                const overdue = isOverdue(p.labourId);
+                return `
+        <div class="post-card" style="animation-delay:${i * .04}s">
+          <div class="post-header">
+            <div class="post-avatar">${p.initials || '??'}</div>
+            <div class="post-meta">
+              <div class="post-name">${escHtml(p.name)}</div>
+              <div class="post-time">${timeAgo(p.time)}</div>
+            </div>
+            <div class="${overdue ? 'overdue-dot' : 'ok-dot'}" title="${overdue ? 'Overdue!' : 'Updated recently'}"></div>
+          </div>
+          ${p.photo ? `<img class="post-img" src="${p.photo}" alt="work" onclick="openLightbox('${p.photo}')" />` : ''}
+          <div class="post-body"><p>${escHtml(p.caption)}</p></div>
+          <div class="post-footer">
+            <span class="time-text">${formatTime(p.time)}</span>
+            ${p.likes > 0 ? `<span class="likes-badge">${p.likes} likes</span>` : ''}
+          </div>
+        </div>`;
+            }).join('');
+        }
+
+        function openLightbox(src) { document.getElementById('lb-img').src = src; document.getElementById('lightbox').classList.add('open'); }
+        function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
+
+        function doLogout() {
+            localStorage.removeItem('selvi_owner_logged_in');
+            localStorage.removeItem('selvi_role');
+            window.location.href = 'index.html';
+        }
+
+        function escHtml(s) {
+            return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+        function timeAgo(ts) {
+            const d = Math.floor((Date.now() - ts) / 1000);
+            if (d < 60) return 'Just now';
+            if (d < 3600) return `${Math.floor(d / 60)}m ago`;
+            if (d < 86400) return `${Math.floor(d / 3600)}h ago`;
+            return new Date(ts).toLocaleDateString('en-IN');
+        }
+        function formatTime(ts) {
+            return new Date(ts).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        // Auto-refresh every 30s
+        updateStats();
+        renderFeed();
+        setInterval(() => { updateStats(); renderFeed(); }, 30000);
+    </script>
+</body>
+
+</html>

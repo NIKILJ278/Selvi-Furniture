@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Feed – Selvi Furniture</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <style>
+        :root {
+            --red: #e53935;
+            --red-dark: #b71c1c;
+            --red-light: #ffebee;
+            --white: #ffffff;
+            --bg: #fafafa;
+            --gray: #9e9e9e;
+            --gray-dark: #424242;
+            --border: #efefef;
+            --text: #1a1a1a;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* ── TOP NAVBAR (Instagram-style) ── */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+        }
+
+        .nav-brand {
+            font-size: 1.3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--red), var(--red-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .nav-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--red), var(--red-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: .8rem;
+            color: #fff;
+            border: 2px solid var(--red-light);
+            cursor: pointer;
+        }
+
+        .btn-nav {
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: .85rem;
+            font-weight: 700;
+            color: var(--red);
+            font-family: 'Inter', sans-serif;
+            padding: 7px 14px;
+            border-radius: 8px;
+            border: 1.5px solid var(--red);
+            transition: all .2s;
+        }
+
+        .btn-nav:hover {
+            background: var(--red);
+            color: #fff;
+        }
+
+        /* ── ALERT BANNER ── */
+        .alert-banner {
+            background: linear-gradient(135deg, #b71c1c, var(--red));
+            color: #fff;
+            padding: 14px 20px;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            font-size: .9rem;
+            font-weight: 600;
+            animation: slideDown .4s ease both;
+        }
+
+        .alert-banner.show {
+            display: flex;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1
+            }
+        }
+
+        .alert-banner .alert-close {
+            margin-left: auto;
+            cursor: pointer;
+            font-size: 1.2rem;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, .2);
+            border-radius: 50%;
+        }
+
+        /* ── COUNTDOWN BAR ── */
+        .countdown-bar {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .countdown-bar .timer-txt {
+            font-size: .82rem;
+            color: var(--gray);
+            flex: 1;
+        }
+
+        .countdown-bar .timer-txt strong {
+            color: var(--text);
+        }
+
+        .timer-val {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--red);
+            font-variant-numeric: tabular-nums;
+            background: var(--red-light);
+            padding: 4px 14px;
+            border-radius: 20px;
+            min-width: 72px;
+            text-align: center;
+        }
+
+        .timer-val.urgent {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: .5
+            }
+        }
+
+        /* ── MAIN LAYOUT ── */
+        .main {
+            max-width: 620px;
+            margin: 0 auto;
+            padding: 24px 16px 80px;
+        }
+
+        /* ── POST CREATE BOX (instagram style) ── */
+        .create-post-card {
+            background: var(--white);
+            border-radius: 18px;
+            border: 1px solid var(--border);
+            margin-bottom: 24px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, .04);
+        }
+
+        .create-post-header {
+            padding: 16px 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .create-post-header .av {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--red), var(--red-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: .85rem;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .create-post-header input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: .93rem;
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            background: transparent;
+        }
+
+        .create-post-header input::placeholder {
+            color: #bbb;
+        }
+
+        .upload-area {
+            border: 2px dashed #e0e0e0;
+            margin: 0 18px 18px;
+            border-radius: 12px;
+            padding: 28px;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+            transition: border-color .2s, background .2s;
+        }
+
+        .upload-area:hover {
+            border-color: var(--red);
+            background: #fff8f8;
+        }
+
+        .upload-area input[type=file] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .upload-area .up-icon {
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .upload-area p {
+            font-size: .8rem;
+            color: var(--gray);
+        }
+
+        .upload-area img.preview {
+            width: 100%;
+            border-radius: 8px;
+            max-height: 200px;
+            object-fit: cover;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .create-post-footer {
+            padding: 0 18px 18px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-post {
+            flex: 1;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--red), var(--red-dark));
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: .92rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: all .2s;
+            box-shadow: 0 6px 18px rgba(229, 57, 53, .3);
+        }
+
+        .btn-post:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(229, 57, 53, .38);
+        }
+
+        /* ── FEED POSTS ── */
+        .post-card {
+            background: var(--white);
+            border-radius: 18px;
+            border: 1px solid var(--border);
+            margin-bottom: 20px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, .04);
+            animation: fadeUp .4s ease both;
+        }
+
+        @keyframes fadeUp {
+            from {
+                transform: translateY(16px);
+                opacity: 0
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1
+            }
+        }
+
+        .post-header {
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--red), var(--red-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: .88rem;
+            color: #fff;
+            border: 2px solid var(--red-light);
+            flex-shrink: 0;
+        }
+
+        .post-meta {
+            flex: 1;
+        }
+
+        .post-name {
+            font-weight: 700;
+            font-size: .92rem;
+        }
+
+        .post-time {
+            font-size: .75rem;
+            color: var(--gray);
+            margin-top: 1px;
+        }
+
+        .post-img {
+            width: 100%;
+            display: block;
+            max-height: 400px;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        .post-body {
+            padding: 14px 16px;
+        }
+
+        .post-body p {
+            font-size: .9rem;
+            line-height: 1.6;
+            color: var(--gray-dark);
+        }
+
+        .post-actions {
+            padding: 10px 16px 14px;
+            display: flex;
+            gap: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .post-action-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: .82rem;
+            color: var(--gray);
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            transition: color .2s;
+            padding: 0;
+        }
+
+        .post-action-btn:hover {
+            color: var(--red);
+        }
+
+        .post-action-btn.liked {
+            color: var(--red);
+        }
+
+        .post-action-btn.liked .heart {
+            animation: heartPop .3s ease;
+        }
+
+        @keyframes heartPop {
+            0% {
+                transform: scale(1)
+            }
+
+            50% {
+                transform: scale(1.4)
+            }
+
+            100% {
+                transform: scale(1)
+            }
+        }
+
+        .empty-feed {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--gray);
+        }
+
+        .empty-feed .empty-icon {
+            font-size: 56px;
+            margin-bottom: 12px;
+        }
+
+        .empty-feed h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--gray-dark);
+            margin-bottom: 6px;
+        }
+
+        /* ── LIGHTBOX ── */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .9);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox.open {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 12px;
+            object-fit: contain;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, .15);
+            border: none;
+            color: #fff;
+            font-size: 1.4rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ── TOAST ── */
+        #toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--text);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: .88rem;
+            font-weight: 600;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .3s;
+            z-index: 999;
+            white-space: nowrap;
+        }
+
+        #toast.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HOURLY ALERT BANNER -->
+    <div class="alert-banner" id="alert-banner">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span id="alert-text">It's been an hour! Please update your work progress now.</span>
+        <span class="alert-close" onclick="dismissAlert()">✕</span>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-brand">SelviWork</div>
+        <div class="nav-right">
+            <div class="nav-avatar" id="nav-initials">??</div>
+            <button class="btn-nav" onclick="doLogout()">Logout</button>
+        </div>
+    </nav>
+
+    <!-- COUNTDOWN -->
+    <div class="countdown-bar">
+        <div class="timer-txt"><strong>Next update due in:</strong> Submit work every hour</div>
+        <div class="timer-val" id="timer-display">60:00</div>
+    </div>
+
+    <!-- MAIN FEED -->
+    <div class="main">
+
+        <!-- Create Post -->
+        <div class="create-post-card">
+            <div class="create-post-header">
+                <div class="av" id="post-avatar">?</div>
+                <input type="text" id="post-caption" placeholder="What have you done? Describe your work…" />
+            </div>
+            <div class="upload-area" id="upload-area">
+                <input type="file" id="photo-input" accept="image/*" onchange="handlePhoto(this)" />
+                <div class="up-icon" id="up-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="1.8" stroke-linecap="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                </div>
+                <p id="up-text">Click to upload a photo of your work</p>
+                <img class="preview" id="photo-preview" alt="Preview" />
+            </div>
+            <div class="create-post-footer">
+                <button class="btn-post" onclick="submitPost()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                    Share Update
+                </button>
+            </div>
+        </div>
+
+        <!-- Feed -->
+        <div id="feed-container"></div>
+
+    </div>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+        <img id="lightbox-img" src="" alt="" />
+    </div>
+
+    <!-- Toast -->
+    <div id="toast"></div>
+
+    <script>
+        // ── AUTH CHECK ──
+        const session = JSON.parse(localStorage.getItem('selvi_labour_session') || 'null');
+        if (!session) { window.location.href = 'labour-auth.html'; }
+
+        const initials = session.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+        document.getElementById('nav-initials').textContent = initials;
+        document.getElementById('post-avatar').textContent = initials;
+
+        // ── POSTS (localStorage) ──
+        function getPosts() { return JSON.parse(localStorage.getItem('selvi_posts') || '[]'); }
+        function savePosts(p) { localStorage.setItem('selvi_posts', JSON.stringify(p)); }
+
+        // ── PHOTO HANDLING ──
+        let selectedPhoto = null;
+        function handlePhoto(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = e => {
+                selectedPhoto = e.target.result;
+                const prev = document.getElementById('photo-preview');
+                prev.src = e.target.result; prev.style.display = 'block';
+                document.getElementById('up-icon').style.display = 'none';
+                document.getElementById('up-text').textContent = 'Photo ready to upload';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // ── SUBMIT POST ──
+        function submitPost() {
+            const caption = document.getElementById('post-caption').value.trim();
+            if (!caption) { showToast('Please describe your work!'); return; }
+            if (!selectedPhoto) { showToast('Please upload a photo.'); return; }
+
+            const posts = getPosts();
+            posts.unshift({
+                id: Date.now(),
+                labourId: session.id || session.email,
+                name: session.name,
+                initials,
+                caption,
+                photo: selectedPhoto,
+                time: Date.now(),
+                likes: 0,
+                likedBy: []
+            });
+            savePosts(posts);
+
+            // Reset form
+            document.getElementById('post-caption').value = '';
+            document.getElementById('photo-input').value = '';
+            document.getElementById('photo-preview').style.display = 'none';
+            document.getElementById('up-icon').style.display = 'block';
+            document.getElementById('up-text').textContent = 'Click to upload a photo of your work';
+            selectedPhoto = null;
+
+            // Reset countdown
+            resetCountdown();
+            dismissAlert();
+            renderFeed();
+            showToast('Update posted!');
+        }
+
+        // ── RENDER FEED ──
+        function renderFeed() {
+            const container = document.getElementById('feed-container');
+            const allPosts = getPosts().filter(p => p.labourId === (session.id || session.email));
+
+            if (!allPosts.length) {
+                container.innerHTML = `
+        <div class="empty-feed">
+          <div class="empty-icon"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="1.5" stroke-linecap="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+          <h3>No updates yet</h3>
+          <p>Share your first work update above!</p>
+        </div>`;
+                return;
+            }
+
+            container.innerHTML = allPosts.map((p, i) => `
+      <div class="post-card" style="animation-delay:${i * .05}s">
+        <div class="post-header">
+          <div class="post-avatar">${p.initials}</div>
+          <div class="post-meta">
+            <div class="post-name">${escHtml(p.name)}</div>
+            <div class="post-time">${timeAgo(p.time)}</div>
+          </div>
+        </div>
+        ${p.photo ? `<img class="post-img" src="${p.photo}" alt="work" onclick="openLightbox('${p.photo}')" />` : ''}
+        <div class="post-body"><p>${escHtml(p.caption)}</p></div>
+        <div class="post-actions">
+          <button class="post-action-btn ${p.likedBy && p.likedBy.includes(session.email) ? 'liked' : ''}"
+                  onclick="toggleLike(${p.id})">
+            <svg class="heart" width="16" height="16" viewBox="0 0 24 24" fill="${p.likedBy && p.likedBy.includes(session.email) ? '#e53935' : 'none'}" stroke="${p.likedBy && p.likedBy.includes(session.email) ? '#e53935' : 'currentColor'}" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            ${p.likes} Likes
+          </button>
+          <span style="margin-left:auto;font-size:.75rem;color:var(--gray);">${formatTime(p.time)}</span>
+        </div>
+      </div>
+    `).join('');
+        }
+
+        function toggleLike(postId) {
+            const posts = getPosts();
+            const p = posts.find(x => x.id === postId);
+            if (!p) return;
+            p.likedBy = p.likedBy || [];
+            if (p.likedBy.includes(session.email)) {
+                p.likedBy = p.likedBy.filter(e => e !== session.email);
+                p.likes = Math.max(0, p.likes - 1);
+            } else {
+                p.likedBy.push(session.email);
+                p.likes++;
+            }
+            savePosts(posts);
+            renderFeed();
+        }
+
+        // ── LIGHTBOX ──
+        function openLightbox(src) { document.getElementById('lightbox-img').src = src; document.getElementById('lightbox').classList.add('open'); }
+        function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
+
+        // ── COUNTDOWN ──
+        let secsLeft = 3600;
+        let countdownInterval;
+
+        function resetCountdown() {
+            secsLeft = 3600;
+            clearInterval(countdownInterval);
+            startCountdown();
+        }
+
+        function startCountdown() {
+            const lastPost = getPosts().filter(p => p.labourId === (session.id || session.email)).sort((a, b) => b.time - a.time)[0];
+            if (lastPost) {
+                const elapsed = Math.floor((Date.now() - lastPost.time) / 1000);
+                secsLeft = Math.max(0, 3600 - elapsed);
+            }
+            clearInterval(countdownInterval);
+            countdownInterval = setInterval(tick, 1000);
+            updateDisplay();
+        }
+
+        function tick() {
+            secsLeft--;
+            if (secsLeft <= 0) {
+                secsLeft = 0;
+                showAlert();
+            }
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            const m = Math.floor(secsLeft / 60).toString().padStart(2, '0');
+            const s = (secsLeft % 60).toString().padStart(2, '0');
+            const el = document.getElementById('timer-display');
+            el.textContent = `${m}:${s}`;
+            el.classList.toggle('urgent', secsLeft <= 300);
+        }
+
+        // ── HOURLY ALERT ──
+        let alertShown = false;
+        function showAlert() {
+            if (alertShown) return;
+            alertShown = true;
+            const banner = document.getElementById('alert-banner');
+            banner.classList.add('show');
+            // Also notify with browser notification if allowed
+            if (Notification.permission === 'granted') {
+                new Notification('Selvi Furniture Reminder', {
+                    body: 'It\'s been an hour! Please update your work progress.',
+                    icon: ''
+                });
+            } else {
+                Notification.requestPermission();
+            }
+        }
+        function dismissAlert() {
+            alertShown = false;
+            document.getElementById('alert-banner').classList.remove('show');
+        }
+
+        // ── LOGOUT ──
+        function doLogout() {
+            clearInterval(countdownInterval);
+            localStorage.removeItem('selvi_labour_session');
+            localStorage.removeItem('selvi_role');
+            window.location.href = 'index.html';
+        }
+
+        // ── HELPERS ──
+        function escHtml(str) {
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+        function timeAgo(ts) {
+            const d = Math.floor((Date.now() - ts) / 1000);
+            if (d < 60) return 'Just now';
+            if (d < 3600) return `${Math.floor(d / 60)}m ago`;
+            if (d < 86400) return `${Math.floor(d / 3600)}h ago`;
+            return new Date(ts).toLocaleDateString('en-IN');
+        }
+        function formatTime(ts) {
+            return new Date(ts).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        let toastTimer;
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg; t.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+        }
+
+        // ── INIT ──
+        renderFeed();
+        startCountdown();
+    </script>
+</body>
+
+</html>
